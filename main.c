@@ -4,7 +4,8 @@
 #include<math.h>
 #include "qt.h"
 
-int main(int argc , char *argv[]){
+int main(int argc , char *argv[])
+{
 
     int Height , Width , max_no_of_colour , i ,j ,threshold ;
     
@@ -26,7 +27,7 @@ int main(int argc , char *argv[]){
         mag_id[2]='\0';
 
         fscanf(fp,"%d",&Height);
-        fscanf(fp,"%d",&Width);
+        fscanf(fp,"%d",&Width);    //height = width (always for sqaure image)
         fscanf(fp,"%d",&max_no_of_colour);
         
         char c = ' ';
@@ -73,8 +74,9 @@ int main(int argc , char *argv[]){
         //   converting the matrix data into  quadtree and compressing it 
         
         Quad_Node *root=NULL;
-        int no_of_colour=0, no_of_nodes=0 , depth=0;
+        int no_of_colour=0, no_of_nodes=0 , depth=0;   //no_of_colour, no_of_nodes = global variables
 
+        printf("%d %d %d ",mat[55][10].R,mat[55][10].G,mat[55][10].B);
         Compression(&root,0,0,Width,Width,mat,threshold,&no_of_colour,&no_of_nodes);
         
         printf("no_of_colour -- %d  ----- no_of_nodes -- %d ", no_of_colour,no_of_nodes);
