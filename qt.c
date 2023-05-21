@@ -40,67 +40,65 @@ void Add_node(Quad_Node **root , colour_pixel p , int l)
 }
 
 //  changes (iterative)
-int Uniformity(colour_pixel **mat , int x ,int y , int l , colour_pixel *p)
+int Uniformity(colour_pixel **mat , int x ,int y , int L , colour_pixel *RGBavg)
 {
     //x(row) and y(column) is the size of mat(2D array)
     long long average=0;
     int i , j;
-    long long R, G ,B ; 
-    long long r , g , b;
-    long long size = l;
+    long long AvgR=0, AvgG=0 ,AvgB=0 ; 
 
-    R=0;
-    G=0;
-    B=0;
-    r=g=b=0;
+    long long size = L;     //L = length
     
-	for(i = x; i < x + l; i++)
+	for(i = x; i < x + L; i++)
     {
-		for(j = y; j < y + l; j++)
+		for(j = y; j < y + L; j++)
         {	
-			r= mat[i][j].R;
-			R = R + r;
-			
-			g = mat[i][j].G;
-			G = G + g;
-
-			b = mat[i][j].B;
-			B = B + b;	
+			AvgR += mat[i][j].R;
+			AvgG += mat[i][j].G;
+			AvgB += mat[i][j].B;	
 		}
 	}
 
-    R = R/(size * size);
-    G = G/(size * size);
-    B = B/(size * size);	
+    //finding Avg of R G B of entire section
+    AvgR = AvgR/(L * L);
+    AvgG = AvgG/(L * L);
+    AvgB = AvgB/(L * L);	
 
-    //  storing the mean values of RGB into  colour_pixel p
-    p->R = R;
-    p->G = G;
-    p->B = B;
+    //  storing the Avg values of RGB into  colour_pixel RGBavg
+    RGBavg->R = AvgR;
+    RGBavg->G = AvgG;
+    RGBavg->B = AvgB;
+
+    //printf("%d %d %d\n",AvgR,AvgG,AvgB);
     
     //  calculating average value of a node
 
-	for(i = x; i < x + l; i++){
-		for(j = y; j < y + l; j++)
-			{
-				average += (R - mat[i][j].R)*(R - mat[i][j].R);
-				average += (B - mat[i][j].B)*(B - mat[i][j].B);
-				average += (G - mat[i][j].G)*(G - mat[i][j].G);
-			}
+    //  WE ARE HERE (19-05-2023)
+
+	for(i = x; i < x + L; i++)
+    {
+		for(j = y; j < y + L; j++)
+        {
+            //variance of average
+            average += (AvgR - mat[i][j].R)*(AvgR - mat[i][j].R);
+            average += (AvgB - mat[i][j].B)*(AvgB - mat[i][j].B);
+            average += (AvgG - mat[i][j].G)*(AvgG - mat[i][j].G);
+        }
 	}
-    average=average/(3*l*l);
+    average=average/(3*L*L);
     return average;
 
 }
 
 //   Compression  in a quadtree of pixels that have RGB data
-void Compression(Quad_Node ** root , int x , int y, int L, int W, colour_pixel ** mat,int threshold , int *no_of_colour, int *no_of_nodes){
-    
+void Compression(Quad_Node** root , int x , int y, int L, int W, colour_pixel** mat,int threshold , int *no_of_colour, int *no_of_nodes)
+{
     int average;    // to get the average value (to check for uniformity)
     
-    colour_pixel p;   // it stores the average colour of current partition...
+    colour_pixel RGBavg;   // it stores the average colour of current partition...
 
-    average = Uniformity(mat, x, y, L, &p);
+    average = Uniformity(mat, x, y, L, &RGBavg);
+    //printf("%d ",average);
 
     if(L<1)
         return;
@@ -108,9 +106,10 @@ void Compression(Quad_Node ** root , int x , int y, int L, int W, colour_pixel *
     //   count no of nodes and add the node to the root..
     (*no_of_nodes)=(*no_of_nodes)+1;
 
-    Add_node(root,p,L);
+    Add_node(root,RGBavg,L);
 
-    if(average>threshold){
+    if(average>threshold)
+    {
 
         Compression(&(*root)->top_left,     x,      y,      L/2,    W,  mat,    threshold,  no_of_colour,no_of_nodes);
         (*no_of_colour)+=1  ;
