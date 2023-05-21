@@ -4,7 +4,7 @@ typedef struct colour_pixel{
 
 typedef  struct Quad_Node{
     unsigned char R, G ,B;
-    unsigned int A;
+    unsigned int A; //AREA
 
     struct Quad_Node *top_left;
     struct Quad_Node *top_right;
@@ -16,7 +16,7 @@ typedef  struct Quad_Node{
 //   functions for compression
 void Add_node(Quad_Node **root , colour_pixel p , int l);
 int Uniformity(colour_pixel **mat , int x ,int y , int l , colour_pixel *p);
-void Compression(Quad_Node ** root , int x , int y, int L, int W, colour_pixel ** mat,int threshold , int *no_of_colour, int *no_of_nodes);
+void Compression(Quad_Node ** root , int x , int y, int L, colour_pixel ** mat,int threshold , int *no_of_colour, int *no_of_nodes);
 int Depth(Quad_Node* root);
 
 //  functions for clearing memory
@@ -27,7 +27,7 @@ int powTwo(int x);
 //   to convert tree  to matrix
 void pix_value(colour_pixel **mat,int x,int y,int l,unsigned char R, unsigned char G , unsigned char B);
 void create_matrix(Quad_Node *root , colour_pixel **mat , int x , int y, int l , int *no_of_colour , int no_of_nodes);
-void create_image(colour_pixel **mat , int Width , int Height, int max_no_of_colour,char *name_of_file);
+void create_image(colour_pixel **mat , int Height, int max_no_of_colour,char *name_of_file);
 
 //  flipping an image
 void Horizontal_flip(Quad_Node **root);
