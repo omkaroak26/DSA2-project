@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<math.h>
-#include "qt.h"
+#include "qt.h" 
 
 //mat = 2D array in which each element is a color_pixel (that is each element has R G and B)
 
@@ -43,7 +43,7 @@ void Add_node(Quad_Node **root , colour_pixel p , int l)
 int Uniformity(colour_pixel **mat , int x ,int y , int L , colour_pixel *RGBavg)
 {
     //x(row) and y(column) is the size of mat(2D array)
-    long long average=0;
+    long long variance=0, average=0;
     int i , j;
     long long AvgR=0, AvgG=0 ,AvgB=0 ; 
 
@@ -71,27 +71,27 @@ int Uniformity(colour_pixel **mat , int x ,int y , int L , colour_pixel *RGBavg)
 
     //printf("%d %d %d\n",AvgR,AvgG,AvgB);
     
-    //  calculating average value of a node
+    //  calculating var value of a node
 
-    //  WE ARE HERE (19-05-2023)
+    //  WE ARE not HERE (19-05-2023)
 
 	for(i = x; i < x + L; i++)
     {
 		for(j = y; j < y + L; j++)
         {
             //variance of average
-            average += (AvgR - mat[i][j].R)*(AvgR - mat[i][j].R);
-            average += (AvgB - mat[i][j].B)*(AvgB - mat[i][j].B);
-            average += (AvgG - mat[i][j].G)*(AvgG - mat[i][j].G);
+            variance += (AvgR - mat[i][j].R)*(AvgR - mat[i][j].R);  //numerator of variance of R
+            variance += (AvgB - mat[i][j].B)*(AvgB - mat[i][j].B);  //numerator of variance of B
+            variance += (AvgG - mat[i][j].G)*(AvgG - mat[i][j].G);  //numerator of variance of G
         }
 	}
-    average=average/(3*L*L);
-    return average;
+    average=variance/(3*L*L);
+    return average; //avg of variances
 
 }
 
 //   Compression  in a quadtree of pixels that have RGB data
-void Compression(Quad_Node** root , int x , int y, int L, int W, colour_pixel** mat,int threshold , int *no_of_colour, int *no_of_nodes)
+void Compression(Quad_Node** root , int x , int y, int L, colour_pixel** mat,int threshold , int *no_of_colour, int *no_of_nodes)
 {
     int average;    // to get the average value (to check for uniformity)
     
@@ -106,26 +106,26 @@ void Compression(Quad_Node** root , int x , int y, int L, int W, colour_pixel** 
     //   count no of nodes and add the node to the root..
     (*no_of_nodes)=(*no_of_nodes)+1;
 
-    Add_node(root,RGBavg,L);
+    Add_node(root,RGBavg,L);   //add the node in quadtree
 
-    if(average>threshold)
+    if(average>threshold)   //base case of recursion
     {
 
-        Compression(&(*root)->top_left,     x,      y,      L/2,    W,  mat,    threshold,  no_of_colour,no_of_nodes);
+        Compression(&(*root)->top_left,     x,      y,      L/2,  mat,    threshold,  no_of_colour,no_of_nodes);
         (*no_of_colour)+=1  ;
 
-        Compression(&(*root)->top_right,    x,      y+L/2 , L/2,    W,  mat,    threshold, no_of_colour, no_of_nodes);
+        Compression(&(*root)->top_right,    x,      y+L/2 , L/2,  mat,    threshold, no_of_colour, no_of_nodes);
         (*no_of_colour)+=1;
 
-        Compression(&(*root)->bottom_right, x+L/2 , y+L/2 , L/2,    W,  mat,    threshold,  no_of_colour,no_of_nodes);
+        Compression(&(*root)->bottom_right, x+L/2 , y+L/2 , L/2,  mat,    threshold,  no_of_colour,no_of_nodes);
         (*no_of_colour)+=1;
 
-        Compression(&(*root)->bottom_left,  x+L/2,  y,      L/2,    W,  mat,    threshold,  no_of_colour,no_of_nodes);
+        Compression(&(*root)->bottom_left,  x+L/2,  y,      L/2,  mat,    threshold,  no_of_colour,no_of_nodes);
         (*no_of_colour)+=1;
 
     }
 
-}
+}// we are here 
 
 
 int Depth(Quad_Node* root){    // determining the depth of a quaternary tree
@@ -197,39 +197,41 @@ void pix_value(colour_pixel **mat,int x,int y,int l,unsigned char R, unsigned ch
 }
 
 
-void create_matrix(Quad_Node *root , colour_pixel **mat , int x , int y, int l , int *no_of_colour , int no_of_nodes){
-    if((*no_of_colour)==0 || l==0)
+void create_matrix(Quad_Node *root , colour_pixel **mat , int x , int y, int L , int *no_of_colour , int no_of_nodes){
+    if((*no_of_colour)==0 || L==0)
         return;
     
     if (root->top_left==NULL)
     {
-        pix_value(mat,x,y,l,root->R, root->G , root->B);
+        pix_value(mat,x,y,L,root->R, root->G , root->B);
         *no_of_colour = (*no_of_colour) - 1;
     }
     else{
-        create_matrix(root->top_left ,      mat , x     , y     , l/2 , no_of_colour , no_of_nodes);
-        create_matrix(root->top_right ,     mat , x     , y+l/2 , l/2 , no_of_colour , no_of_nodes);
-        create_matrix(root->bottom_right ,  mat , x+l/2 , y+l/2 , l/2 , no_of_colour , no_of_nodes);
-        create_matrix(root->bottom_left ,   mat , x+l/2 , y     , l/2 , no_of_colour , no_of_nodes);
+        create_matrix(root->top_left ,      mat , x     , y     , L/2 , no_of_colour , no_of_nodes);
+        create_matrix(root->top_right ,     mat , x     , y+L/2 , L/2 , no_of_colour , no_of_nodes);
+        create_matrix(root->bottom_right ,  mat , x+L/2 , y+L/2 ,L/2 , no_of_colour , no_of_nodes);
+        create_matrix(root->bottom_left ,   mat , x+L/2 , y     , L/2 , no_of_colour , no_of_nodes);
     }
     
-}
+} //creates matrix from quadtree
+//each block in the matrix holds the RGB value of the corresponding leaf node in the quadtree
 
 
-void create_image(colour_pixel **mat , int Width , int Height, int max_no_of_colour,char *name_of_file){
+void create_image(colour_pixel **mat , int Height, int max_no_of_colour,char *name_of_file){
 	
     FILE *fp = fopen(name_of_file,"wb");
 	fprintf(fp, "%s\n", "P6");
-	fprintf(fp, "%d %d\n", Height, Width);
+	fprintf(fp, "%d %d\n", Height, Height);
     fprintf(fp, "%d\n", max_no_of_colour);
 
     int i,j;
   
 	for(i = 0; i < Height; i++){
-	 	fwrite(mat[i],sizeof(colour_pixel),Width,fp);
+	 	fwrite(mat[i],sizeof(colour_pixel),Height,fp);
+        printf("%c ",mat[i][0]);
 	}
 	fclose(fp);
-}
+} //rewrite ppm file
 
 
 void Horizontal_flip(Quad_Node **root){
@@ -299,7 +301,7 @@ void complete_tree(Quad_Node **root,int l, int depth, int line){
 
 }
 
-
+/*
 void Overlap_imgs(Quad_Node *root1 , Quad_Node *root2, colour_pixel **mat , int x,int y, int L){
     if(L==0)
         return;
@@ -312,7 +314,7 @@ void Overlap_imgs(Quad_Node *root1 , Quad_Node *root2, colour_pixel **mat , int 
         Overlap_imgs(root1->bottom_left , root2->bottom_right , mat , x+L/2 , y     , L/2);
         Overlap_imgs(root1->bottom_right  , root2->bottom_left  , mat , x+L/2 , y+L/2 , L/2);
     }
-}
+}*/
 
 void red(Quad_Node *root,colour_pixel **mat,int x,int y,int L){
     if(L==0)
