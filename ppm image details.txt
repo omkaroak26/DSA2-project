@@ -16,3 +16,7 @@ image format:
 
  If the PPM magic identifier is "P6" then the image data is stored in byte format, 
  one byte per colour component (r,g,b).
+
+ in the ppm file, each pixel contributes 3 characters (RGB) , 
+ so number of characters in ppm file = 3 * height * height
+ Eg. if file is 16 pixel, then characters = 48

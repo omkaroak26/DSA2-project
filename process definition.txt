@@ -3,3 +3,8 @@ read height width
 create blank matrix of heightxwidth
 read ppm file and input data into matrix
 call compression
+    call uniformity, returns avg of variances
+    add node called to create quadtree
+    compress quadtree
+convert compressed quadtree to matrix 
+matrix to ppm
