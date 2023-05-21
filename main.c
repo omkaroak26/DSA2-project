@@ -76,8 +76,8 @@ int main(int argc , char *argv[])
         Quad_Node *root=NULL;
         int no_of_colour=0, no_of_nodes=0 , depth=0;   //no_of_colour, no_of_nodes = global variables
 
-        printf("%d %d %d ",mat[55][10].R,mat[55][10].G,mat[55][10].B);
-        Compression(&root,0,0,Width,Width,mat,threshold,&no_of_colour,&no_of_nodes);
+       // printf("%d %d %d ",mat[55][10].R,mat[55][10].G,mat[55][10].B);
+        Compression(&root,0,0,Width,mat,threshold,&no_of_colour,&no_of_nodes);
         
         printf("no_of_colour -- %d  ----- no_of_nodes -- %d ", no_of_colour,no_of_nodes);
         // no_of_colour -- 12632904  ----- no_of_nodes -- 101672
@@ -95,10 +95,10 @@ int main(int argc , char *argv[])
         //  converting our quadtree to our matirx
 
         create_matrix(root,mat,x,y,l,&no_of_colour ,no_of_nodes);
-        create_image(mat,Width,Width,max_no_of_colour,argv[4]);
+        create_image(mat,Width,max_no_of_colour,argv[4]);
         del_Matrix(mat,Height);
         del_tree(root);
-    }
+    }// here 21.5.23
     
     if(strcmp(argv[1],"-m") == 0){
         colour_pixel **mat;
@@ -136,7 +136,7 @@ int main(int argc , char *argv[])
         Quad_Node *root=NULL;
         int no_of_colour=0, no_of_nodes=0 , depth=0;
 		int x,y,l;
-        Compression(&root,0,0,Width,Width,mat,threshold,&no_of_colour,&no_of_nodes);
+        Compression(&root,0,0,Width,mat,threshold,&no_of_colour,&no_of_nodes);
         // printf("no_of_colour -- %d  ----- no_of_nodes -- %d ", no_of_colour,no_of_nodes);
         depth=Depth(root);
         if (mirror==1)
@@ -152,7 +152,7 @@ int main(int argc , char *argv[])
 		l = Width; 
 
         create_matrix(root,mat,x,y,l,&no_of_colour ,no_of_nodes);
-        create_image(mat,Width,Width,max_no_of_colour,argv[5]);
+        create_image(mat,Width,max_no_of_colour,argv[5]);
         del_Matrix(mat,Height);
         del_tree(root);
         
@@ -215,8 +215,8 @@ int main(int argc , char *argv[])
         int no_of_colour2=0, no_of_nodes2=0 , depth2=0;
 		int x,y,l;
         x=0 , y=0 , l=Width1;
-        Compression(&root1 ,0 ,0 , Width1 , Width1 , mat1 , threshold ,&no_of_colour1 , &no_of_nodes1 );
-        Compression(&root2 ,0 ,0 , Width2 , Width2 , mat2 , threshold ,&no_of_colour2 , &no_of_nodes2 );
+        Compression(&root1 ,0 ,0 , Width1 , mat1 , threshold ,&no_of_colour1 , &no_of_nodes1 );
+        Compression(&root2 ,0 ,0 , Width2 , mat2 , threshold ,&no_of_colour2 , &no_of_nodes2 );
     
         depth1=Depth(root1);
         depth2=Depth(root2);
@@ -238,7 +238,7 @@ int main(int argc , char *argv[])
 		depth2 = Depth(root2);
 
         Overlap_imgs(root1, root2, mat1 , x, y, l);
-        create_image(mat1,Width1,Width1,max_no_of_colour,argv[5]);
+        create_image(mat1,Width1,max_no_of_colour,argv[5]);
 
         del_Matrix(mat1, Width1);
         del_tree(root1);
@@ -296,7 +296,7 @@ int main(int argc , char *argv[])
         int no_of_colour=0, no_of_nodes=0 , depth=0;
         int x=0 , y=0 , L;
         L=Width1;
-        Compression(&root1,0,0,Width1,Width1,mat1,threshold,&no_of_colour,&no_of_nodes);
+        Compression(&root1,0,0,Width1,mat1,threshold,&no_of_colour,&no_of_nodes);
         depth=Depth(root1);
         
         if(colour==1){
@@ -323,7 +323,7 @@ int main(int argc , char *argv[])
             return 0;
         }
 
-		create_image(mat1, Width1, Width1, max_no_of_colour, argv[5]);
+		create_image(mat1, Width1, max_no_of_colour, argv[5]);
 		del_Matrix(mat1, Width1);
 		del_tree(root1);
     }
