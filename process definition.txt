@@ -1,0 +1,5 @@
+image input as ppm
+read height width
+create blank matrix of heightxwidth
+read ppm file and input data into matrix
+call compression

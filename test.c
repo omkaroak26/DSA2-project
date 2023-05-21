@@ -55,6 +55,54 @@ void Add_node(Quad_Node **root , colour_pixel p , int l)
     if(root==NULL)
 }*/
 
+int Uniformity(colour_pixel **mat , int x ,int y , int L , colour_pixel *RGBavg)
+{
+    //x(row) and y(column) is the size of mat(2D array)
+    long long average=0;
+    int i , j;
+    long long AvgR=0, AvgG=0 ,AvgB=0 ; 
+
+    long long size = L;     //L = length
+    
+	for(i = x; i < x + L; i++)
+    {
+		for(j = y; j < y + L; j++)
+        {	
+			AvgR += mat[i][j].R;
+			AvgG += mat[i][j].G;
+			AvgB += mat[i][j].B;	
+		}
+	}
+
+    //finding Avg of R G B of entire section
+    AvgR = AvgR/(L * L);
+    AvgG = AvgG/(L * L);
+    AvgB = AvgB/(L * L);	
+
+    //  storing the Avg values of RGB into  colour_pixel RGBavg
+    RGBavg->R = AvgR;
+    RGBavg->G = AvgG;
+    RGBavg->B = AvgB;
+    
+    //  calculating average value of a node
+
+    //  WE ARE HERE (18-05-2023)
+
+	for(i = x; i < x + L; i++)
+    {
+		for(j = y; j < y + L; j++)
+        {
+            //variance of average
+            average += (AvgR - mat[i][j].R)*(AvgR - mat[i][j].R);
+            average += (AvgB - mat[i][j].B)*(AvgB - mat[i][j].B);
+            average += (AvgG - mat[i][j].G)*(AvgG - mat[i][j].G);
+        }
+	}
+    average=average/(3*L*L);
+    return average;
+
+}
+
 void print(Quad_Node* root)
 {
     printf("%d ",root->R);
