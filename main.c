@@ -11,8 +11,8 @@ int main(int argc , char *argv[])
     
     //   for compression  use  ---- ./quadtree -c threshold < file_name .ppm format > < file output .out format >
     
-    if(strcmp(argv[1],"-c")==0){
-        
+    if(strcmp(argv[1],"-c")==0)
+    {
         colour_pixel **mat;
 
         FILE *fp=fopen(argv[3],"rb");
@@ -29,16 +29,10 @@ int main(int argc , char *argv[])
         fscanf(fp,"%d",&Height);
         fscanf(fp,"%d",&Width);    //height = width (always for sqaure image)
         fscanf(fp,"%d",&max_no_of_colour);
-        
-        char c = ' ';
-        //fscanf(fp,"%c",&c);   Commented bvy Omkar
-        
-		
-        //   creating matrix of size  H x W of type colour_pixel
 
-        //mat=malloc(Height*sizeof(colour_pixel*));   Comented by Omkar
+        //creating matrix of size  H x W of type colour_pixel
 
-        mat=(colour_pixel*)malloc(Height*sizeof(colour_pixel*));
+        mat=(colour_pixel**)malloc(Height*sizeof(colour_pixel*));
 
         for(i=0;i<Height;i++)
         {
@@ -59,34 +53,15 @@ int main(int argc , char *argv[])
         }
         fclose(fp);
 
-
-        // int count=0;
-        // for (int i = 0; i < Height; i++)
-        // {
-        //     for (int j = 0; j < Width; j++)
-        //         count++;          
-        // }
-        // printf("Height = %d  Width = %d   , Height X Width  %d \n", Height, Width , Height*Width);
-        // printf("%d ",count);
-
-
-
-        //   converting the matrix data into  quadtree and compressing it 
+        //converting the matrix data into  quadtree and compressing it 
         
         Quad_Node *root=NULL;
-        int no_of_colour=0, no_of_nodes=0 , depth=0;   //no_of_colour, no_of_nodes = global variables
+        int no_of_colour=0, no_of_nodes=0 ;   //no_of_colour, no_of_nodes = global variables
 
        // printf("%d %d %d ",mat[55][10].R,mat[55][10].G,mat[55][10].B);
         Compression(&root,0,0,Width,mat,threshold,&no_of_colour,&no_of_nodes);
         
-        printf("no_of_colour -- %d  ----- no_of_nodes -- %d ", no_of_colour,no_of_nodes);
-        // no_of_colour -- 12632904  ----- no_of_nodes -- 101672
-
-        depth=Depth(root);
-        // printf(" \n \n Depth  %d ",depth);
-
-
-
+        //printf("no_of_colour -- %d  ----- no_of_nodes -- %d ", no_of_colour,no_of_nodes);
 
         int x,y,l;
  		x = y =0;
@@ -98,7 +73,7 @@ int main(int argc , char *argv[])
         create_image(mat,Width,max_no_of_colour,argv[4]);
         del_Matrix(mat,Height);
         del_tree(root);
-    }// here 21.5.23
+    }
     
     if(strcmp(argv[1],"-m") == 0){
         colour_pixel **mat;
@@ -134,11 +109,11 @@ int main(int argc , char *argv[])
 		fclose(fp); 
 
         Quad_Node *root=NULL;
-        int no_of_colour=0, no_of_nodes=0 , depth=0;
+        int no_of_colour=0, no_of_nodes=0;
 		int x,y,l;
-        Compression(&root,0,0,Width,mat,threshold,&no_of_colour,&no_of_nodes);
-        // printf("no_of_colour -- %d  ----- no_of_nodes -- %d ", no_of_colour,no_of_nodes);
-        depth=Depth(root);
+
+        CreateQuadTree(&root,0,0,Width,mat,&no_of_colour,&no_of_nodes);
+
         if (mirror==1)
         {
             Horizontal_flip(&root);
@@ -148,6 +123,7 @@ int main(int argc , char *argv[])
             Vertical_flip(&root);
         }
 
+
 		x = y =0;
 		l = Width; 
 
@@ -156,94 +132,6 @@ int main(int argc , char *argv[])
         del_Matrix(mat,Height);
         del_tree(root);
         
-    }
-
-    if(strcmp(argv[1],"-o")==0){
-        
-        colour_pixel **mat1 , **mat2;
-        int Width1 , Height1 ;
-        int Width2 , Height2 ;
-
-        threshold =atoi(argv[2]);
-
-        //   reading file1
-        FILE *f1=fopen(argv[3],"rb");
-        char mag_id1[3];
-		fscanf(f1,"%2s",mag_id1);
-		mag_id1[2]='\0';
-		fscanf(f1, "%d", &Height1);
-    	fscanf(f1, "%d", &Width1);
-    	fscanf(f1, "%d", &max_no_of_colour);
-    	char c;
-    	fscanf(f1,"%c",&c);  
-
-    	mat1 = malloc(Height1 * sizeof(colour_pixel*));
-		for(i = 0; i < Height1; i++)
-			mat1[i] = malloc(Width1*sizeof(colour_pixel));
-
-		for(i = 0; i < Height1; i++){
-			for(j = 0; j < Width1; j++)
-				fread(&mat1[i][j], sizeof(colour_pixel), 1, f1);
-		}
-		fclose(f1); 
-
-        //   reading file2
-        FILE *f2=fopen(argv[4],"rb");      
-        char mag_id2[3];
-		fscanf(f2,"%2s",mag_id2);
-		mag_id2[2]='\0';
-		fscanf(f2, "%d", &Height2);
-    	fscanf(f2, "%d", &Width2);
-    	fscanf(f2, "%d", &max_no_of_colour);
-    	fscanf(f1,"%c",&c);  
-
-    	mat2 = malloc(Height2 * sizeof(colour_pixel*));
-		for(i = 0; i < Height2; i++)
-			mat2[i] = malloc(Width2*sizeof(colour_pixel));
-
-		for(i = 0; i < Height2; i++){
-			for(j = 0; j < Width2; j++)
-				fread(&mat2[i][j], sizeof(colour_pixel), 1, f2);
-		}
-		fclose(f2); 
-        // printf("H1 %d  W1 %d H2 %d W2 %d",Height1,Width1,Height2,Width2);
-
-        Quad_Node *root1=NULL;
-        Quad_Node *root2=NULL;
-
-        int no_of_colour1=0, no_of_nodes1=0 , depth1=0;
-        int no_of_colour2=0, no_of_nodes2=0 , depth2=0;
-		int x,y,l;
-        x=0 , y=0 , l=Width1;
-        Compression(&root1 ,0 ,0 , Width1 , mat1 , threshold ,&no_of_colour1 , &no_of_nodes1 );
-        Compression(&root2 ,0 ,0 , Width2 , mat2 , threshold ,&no_of_colour2 , &no_of_nodes2 );
-    
-        depth1=Depth(root1);
-        depth2=Depth(root2);
-        printf("no_of_colour1 %d  no_of_nodes1 %d depth1 %d ",no_of_colour1,no_of_nodes1,depth1);
-        printf("no_of_colour2 %d  no_of_nodes2 %d depth2 %d ",no_of_colour2,no_of_nodes2,depth2);
-        int max_depth;
-        
-        if(depth1 > depth2)
-            max_depth=depth1;
-        else
-            max_depth=depth2;
-        printf("%d ",max_depth);
-        int k = 1;
-
-        complete_tree(&root1,Width1,max_depth,1);
-        complete_tree(&root2,Width2,max_depth,1);
-
-        depth1 = Depth(root1);
-		depth2 = Depth(root2);
-
-        Overlap_imgs(root1, root2, mat1 , x, y, l);
-        create_image(mat1,Width1,max_no_of_colour,argv[5]);
-
-        del_Matrix(mat1, Width1);
-        del_tree(root1);
-        del_Matrix(mat2, Width2);
-        del_tree(root2);
     }
 
     if(strcmp(argv[1],"-a") == 0){
@@ -285,19 +173,24 @@ int main(int argc , char *argv[])
 
 		mat1 = malloc(Height1 * sizeof(colour_pixel*));
 		for(i = 0; i < Height1; i++)
-			mat1[i] = malloc(Width1 * sizeof(colour_pixel));
+		{
+            mat1[i] = malloc(Width1 * sizeof(colour_pixel));
+        }
 
-		for(i = 0; i < Height1; i++){
+		for(i = 0; i < Height1; i++)
+        {
 			for(j = 0; j < Width1; j++)
-				fread(&mat1[i][j], sizeof(colour_pixel), 1, fp);
+            {
+                fread(&mat1[i][j], sizeof(colour_pixel), 1, fp);
+            }
 		}
         fclose(fp);
 
-        int no_of_colour=0, no_of_nodes=0 , depth=0;
+        int no_of_colour=0, no_of_nodes=0 ;
         int x=0 , y=0 , L;
         L=Width1;
-        Compression(&root1,0,0,Width1,mat1,threshold,&no_of_colour,&no_of_nodes);
-        depth=Depth(root1);
+
+        CreateQuadTree(&root1,0,0,Width1,mat1,&no_of_colour,&no_of_nodes);
         
         if(colour==1){
             red(root1,mat1,x,y,L);
@@ -319,7 +212,7 @@ int main(int argc , char *argv[])
             black_white(root1,mat1,x,y,L);
         }
         else{
-            printf("Your selected chice is wrong");
+            printf("Your selected choice is wrong");
             return 0;
         }
 
@@ -330,4 +223,3 @@ int main(int argc , char *argv[])
 
     return 0;    
 }
-
