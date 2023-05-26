@@ -1,4 +1,0 @@
-overlapping images
-what is A in struct definition and L
-what is mat?
-what is magic ppm identifier?
