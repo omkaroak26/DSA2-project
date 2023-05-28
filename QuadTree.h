@@ -3,7 +3,7 @@ typedef struct colour_pixel
     unsigned char R,G,B;
 }colour_pixel;
 
-typedef  struct Quad_Node
+typedef struct Quad_Node
 {
     unsigned char R, G ,B;
 
