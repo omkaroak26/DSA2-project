@@ -19,26 +19,22 @@ Clone the project
 
 
 ## Compile
-
+![compile command](./screenshots/compile.jpg)
 
 
 ##Screenshots
-
-          
-
-
-         
-
-
-        
+![example](./screenshots/compress.jpg)
+![example](./screenshots/vertical.jpg)
+![example](./screenshots/horizantal.jpg)
+![example](./screenshots/green.jpg)
+![example](./screenshots/black.jpg)
 
 
 
+##Â Authors
 
-## Authors
-
-- [Omkar Oak - 112103099](https://github.com/omkaroak26)
-- [Rukmini Nazre - 112103098](https://github.com/rukmini-17)
-- [Vardhan Mundada - 112103091](https://github.com/Vardhan-Mundada)
+-Â [OmkarÂ OakÂ -Â 112103099](https://github.com/omkaroak26)
+-Â [RukminiÂ NazreÂ -Â 112103098](https://github.com/rukmini-17)
+-Â [VardhanÂ MundadaÂ -Â 112103091](https://github.com/Vardhan-Mundada)
 
 
