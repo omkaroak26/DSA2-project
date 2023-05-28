@@ -29,7 +29,7 @@ Clone the project
 5. Compression:
     It includes two sub-steps: uniformity calculation and quadtree creation. <br>
     5.1. Uniformity Calculation:
-        Call the uniformity function, which calculates the average of variances within the image. 
+        Call the uniformity function, which calculates the average of variances within the image.   
     5.2. Create Quadtree:
         The function creates a quadtree data structure that represents the image.
 6. Compress Quadtree:
