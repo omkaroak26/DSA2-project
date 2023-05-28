@@ -19,15 +19,15 @@ Clone the project
 
 
 ## Compile
-![compile command](./screenshots/compile.png)
+![](DSA2-project/screenshots/compile.png)
 
 
 ## Screenshots
-![example](./screenshots/compress.png)
-![example](./screenshots/vertical.png)
-![example](./screenshots/horizantal.png)
-![example](./screenshots/green.png)
-![example](./screenshots/black.png)
+![](./screenshots/compress.png)
+![](./screenshots/vertical.png)
+![](./screenshots/horizantal.png)
+![](./screenshots/green.png)
+![](./screenshots/black.png)
 
 
 
