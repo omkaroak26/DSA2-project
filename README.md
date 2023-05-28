@@ -9,6 +9,7 @@ The Quadtree Image Compression project aims to provide an efficient compression 
 Image format :- PPM (Portable Pixmap Format)
 
 ## Run Locally
+
 gcc -Wall main.c Quadtree.c menu.c -o main
 ./main input.ppm output.ppm
 
