@@ -15,11 +15,31 @@ gcc -Wall main.c Quadtree.c menu.c -o main
 ./main input.ppm output.ppm
 ```
 
-Clone the project
+## Clone the project
 
 ```bash
  git clone https://github.com/omkaroak26/DSA2-project.git
 ```
+
+## PPM Image format
+A PPM file consists of two parts, a header and the image data header has 3 parts:
+- Line 1: The first "line" is a magic PPM identifier, it can be "P3" or "P6"
+- Line 2: width and height separated by space
+- Line 3: maximum value of the color components for the pixels (which will be 255)  
+
+```
+P6 
+1024 512 
+255
+```
+
+Image format:  
+- If it is "P3" then the image is given as ascii text, the numerical value of each pixel ranges from 0 to the maximum value given in the header. 
+- The lines should not be longer than 70 characters.
+
+- If the PPM magic identifier is "P6" then the image data is stored in byte format, one byte per colour component (R,G,B).
+
+
 ## Process of image compression:
 1. Input the images in PPM(Portable Pixmap Format) format.
 2. Read Image Metadata:
