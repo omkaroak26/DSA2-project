@@ -39,6 +39,7 @@ Image format:
 
 - If the PPM magic identifier is "P6" then the image data is stored in byte format, one byte per colour component (R,G,B).
 
+--------
 
 ## Process of image compression:
 1. Input the images in PPM(Portable Pixmap Format) format.
@@ -61,13 +62,13 @@ Image format:
     Convert the matrix data back into PPM format.
 9. Delete matrix and Quadtree to save space
 
-## Process of Image rotation
+## Process of Image rotation:
 1. Each parent node or pixel has 4 child nodes. 
 2. Thus, the image can be flipped by swapping nodes and calling the main flip function recursively for each child node.  
     a. Horizontal Flip: Top left and bottom left are swapped with top right and bottom right respectively.   
     b. Vertical Flip: Top left and top right are swapped with bottom left and bottom right respectively.  
 
-## Process of Image filters (R,G,B,B&W,Grayscale)
+## Process of Image filters (R,G,B,B&W,Grayscale):
 1. During the application of a red filter to an image, the code recursively calls the function until it reaches a terminal node. 
 2. At this node, only the red colour value is preserved, while the green and blue values are set to zero (root->red,0, 0). 
 3. This process selectively retains the red colour information, effectively filtering out the green and blue colours.
