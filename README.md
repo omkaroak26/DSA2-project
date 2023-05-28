@@ -27,7 +27,7 @@ Clone the project
 3. Create a blank matrix of size height x width to hold the image data
 4. Read PPM File and input it into the matrix
 5. Compression:
-    It includes two sub-steps: uniformity calculation and quadtree creation.
+    It includes two sub-steps: uniformity calculation and quadtree creation. <\br>
     5.1. Uniformity Calculation:
         Call the uniformity function, which calculates the average of variances within the image. 
     5.2. Create Quadtree:
