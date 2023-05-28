@@ -10,10 +10,10 @@ Image format :- PPM (Portable Pixmap Format)
 
 ## Run Locally
 
-'''bash
+```bash
 gcc -Wall main.c Quadtree.c menu.c -o main
 ./main input.ppm output.ppm
-'''
+```
 
 Clone the project
 
