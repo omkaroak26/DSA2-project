@@ -75,14 +75,7 @@ Image format:
 
 Similar approach is carried for application of Blue, Green filter and Black-White images.
 
-
-## Screenshots
-![](./screenshots/compress.png)
-![](./screenshots/vertical.png)
-![](./screenshots/horizantal.png)
-![](./screenshots/green.png)
-![](./screenshots/black.png)
-
+-----------
 
 
 ## Authors
