@@ -6,7 +6,7 @@
 
 void MainMenu(char* input_image,char* output_image)
 {
-    int Height , Width , max_no_of_colour;
+    int Height , Width , max_no_of_colour, i, j;
                                 
     // Choice variable
     int choice = -1, c1=-1, c2=-1;
@@ -16,9 +16,10 @@ void MainMenu(char* input_image,char* output_image)
         printf("\nEnter your choice: ");
         scanf("%d", &choice);
         
+        
         if(choice == 1)
         {
-            int threshold = 1;
+        	int threshold = 1;
             printf("Enter Threshold: ");
             scanf("%d",&threshold);
             colour_pixel **mat;
@@ -36,45 +37,50 @@ void MainMenu(char* input_image,char* output_image)
             fscanf(fp,"%d",&Height);
             fscanf(fp,"%d",&Width);    //height = width (always for square image)
             fscanf(fp,"%d",&max_no_of_colour);
+		
+		
+		char c;
+		fscanf(fp,"%c",&c);
+			
+		//creating matrix of size  H x W of type colour_pixel
 
-            //creating matrix of size  H x W of type colour_pixel
+		mat=malloc(Height*sizeof(colour_pixel *));
 
-            mat = (colour_pixel**)malloc(Height*sizeof(colour_pixel*));
+		for(i=0;i<Height;i++){
+		    mat[i]=malloc(Width*sizeof(colour_pixel));
+		}
+		
+		//  blank matrix is created.......   Now we need to fill the matrix from ppm file.
 
-            for(int i=0;i<Height;i++)
-            {
-                mat[i] = (colour_pixel*)malloc(Width*sizeof(colour_pixel));
-            }
-            
-            //  blank matrix is created.......   Now we need to fill the matrix from ppm file.
+		for(i=0;i<Height;i++){
+		    for(j=0;j<Width;j++){
+		    	//fread = pointer, sizeof 1 element, number of elements to read, read from pointer
+		        fread(&mat[i][j].R , sizeof(unsigned char),1,fp);
+		        fread(&mat[i][j].G , sizeof(unsigned char),1,fp);
+		        fread(&mat[i][j].B , sizeof(unsigned char),1,fp);
+		    }
+		}
+		fclose(fp);
 
-            for(int i=0;i<Height;i++)
-            {
-                for(int j=0;j<Width;j++)
-                {
-                    //fread = pointer, sizeof 1 element, number of elements to read, read from pointer
-                    fread(&mat[i][j].R , sizeof(unsigned char),1,fp);
-                    fread(&mat[i][j].G , sizeof(unsigned char),1,fp);
-                    fread(&mat[i][j].B , sizeof(unsigned char),1,fp);
-                }
-            }
-            fclose(fp);
 
-            //converting the matrix data into  quadtree and compressing it 
-            
-            Quad_Node *root=NULL;
-            int no_of_colour=0, no_of_nodes=0 ;   //no_of_colour, no_of_nodes = global variables
+		//converting the matrix data into  quadtree and compressing it 
+		
+		Quad_Node *root=NULL;
+		int no_of_colour=0, no_of_nodes=0;   //no_of_colour, no_of_nodes = global variables
 
-            Compression(&root,0,0,Width,mat,threshold,&no_of_colour,&no_of_nodes);
+		Compression(&root,0,0,Width,Width,mat,threshold,&no_of_colour,&no_of_nodes);
+		
+		printf("no_of_colour -- %d  ----- no_of_nodes -- %d ", no_of_colour,no_of_nodes);
+		// no_of_colour -- 12632904  ----- no_of_nodes -- 101672
 
-            int x = 0, y = 0;
 
-            //  converting copmressed quadtree to our matrix
+		int x=0,y=0;
 
-            create_matrix(root,mat,x,y,Width,&no_of_colour ,no_of_nodes);
-            create_image(mat,Width,max_no_of_colour,output_image);
-            del_Matrix(mat,Height);
-            del_tree(root);
+		//converting our quadtree to our matirx
+		create_matrix(root,mat,x,y,Width,&no_of_colour ,no_of_nodes);
+		create_image(mat,Width,Width,max_no_of_colour,output_image);
+		del_Matrix(mat,Height);
+		del_tree(root);
 
             return;
         }
@@ -138,7 +144,7 @@ void MainMenu(char* input_image,char* output_image)
             int x = 0, y = 0;
 
             create_matrix(root,mat,x,y,Width,&no_of_colour ,no_of_nodes);
-            create_image(mat,Width,max_no_of_colour,output_image);
+            create_image(mat,Height,Width,max_no_of_colour,output_image);
             del_Matrix(mat,Height);
             del_tree(root);
 
@@ -225,7 +231,7 @@ void MainMenu(char* input_image,char* output_image)
                 black_white(root,mat,x,y,Width);
             }
                 
-            create_image(mat, Width, max_no_of_colour, output_image);
+            create_image(mat, Height, Width, max_no_of_colour, output_image);
             del_Matrix(mat, Width);
             del_tree(root);
             return;
