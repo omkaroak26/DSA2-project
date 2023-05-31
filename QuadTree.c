@@ -86,7 +86,7 @@ int Uniformity(colour_pixel **mat , int x ,int y , int L , colour_pixel *RGBavg)
 }
 
 //Compression  in a quadtree of pixels that have RGB data
-void Compression(Quad_Node** root , int x , int y, int L, colour_pixel** mat,int threshold , int *no_of_colour, int *no_of_nodes)
+void Compression(Quad_Node** root , int x , int y, int L,int W, colour_pixel** mat,int threshold , int *no_of_colour, int *no_of_nodes)
 {
     colour_pixel RGBavg;   // it stores the average colour of current partition...
 
@@ -105,16 +105,16 @@ void Compression(Quad_Node** root , int x , int y, int L, colour_pixel** mat,int
     if(average>threshold)   //base case of recursion
     {
 
-        Compression(&(*root)->top_left,     x,      y,      L/2,  mat,    threshold,  no_of_colour,no_of_nodes);
+        Compression(&(*root)->top_left,     x,      y,      L/2, W,  mat,    threshold,  no_of_colour,no_of_nodes);
         (*no_of_colour)+=1;
 
-        Compression(&(*root)->top_right,    x,      y+L/2 , L/2,  mat,    threshold, no_of_colour, no_of_nodes);
+        Compression(&(*root)->top_right,    x,      y+L/2 , L/2, W,  mat,    threshold, no_of_colour, no_of_nodes);
         (*no_of_colour)+=1;
 
-        Compression(&(*root)->bottom_right, x+L/2 , y+L/2 , L/2,  mat,    threshold,  no_of_colour,no_of_nodes);
+        Compression(&(*root)->bottom_right, x+L/2 , y+L/2 , L/2, W,  mat,    threshold,  no_of_colour,no_of_nodes);
         (*no_of_colour)+=1;
 
-        Compression(&(*root)->bottom_left,  x+L/2,  y,      L/2,  mat,    threshold,  no_of_colour,no_of_nodes);
+        Compression(&(*root)->bottom_left,  x+L/2,  y,      L/2, W,  mat,    threshold,  no_of_colour,no_of_nodes);
         (*no_of_colour)+=1;
 
     }
@@ -227,7 +227,7 @@ void create_matrix(Quad_Node *root , colour_pixel **mat , int x , int y, int L ,
 }
 
 //rewrite ppm file from a matrix
-void create_image(colour_pixel **mat , int Height, int max_no_of_colour,char *name_of_file)
+void create_image(colour_pixel **mat , int Height,int Width, int max_no_of_colour,char *name_of_file)
 {
 	
     FILE *fp = fopen(name_of_file,"wb");
