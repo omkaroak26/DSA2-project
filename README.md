@@ -15,16 +15,17 @@ gcc -Wall main.c Quadtree.c menu.c -o main
 ./main input.ppm output.ppm
 ```
 ## Build and Run using CMake
-- Put all header_files in HEADER_FILES
-- Put all source_files in SOURCE_FILES
+- Make use of `CMakeLists.txt` file
+- Put all header_files in HEADER_FILES directory
+- Put all source_files in SOURCE_FILES directory
 ```bash
-mkdir HEADER_FILES
-mkdir SOURCE_FILES
-mkdir build
-cd build
-cmake ..
-make
-./ImageManipulator input_image.ppm output_image.ppm
+>> mkdir HEADER_FILES
+>> mkdir SOURCE_FILES
+>> mkdir build
+>> cd build
+>> cmake ..
+>> make
+>> ./ImageManipulator input_image.ppm output_image.ppm
 ```
 
 ## Clone the project
