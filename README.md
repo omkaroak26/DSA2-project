@@ -8,12 +8,19 @@ The Quadtree Image Compression project aims to provide an efficient compression 
 
 Image format :- PPM (Portable Pixmap Format)
 
+## Clone the project
+
+```bash
+ git clone https://github.com/omkaroak26/DSA2-project.git
+```
+
 ## Run Locally
 
 ```bash
 gcc -Wall main.c Quadtree.c menu.c -o main
 ./main input.ppm output.ppm
 ```
+
 ## Build and Run using CMake
 - Make use of `CMakeLists.txt` file
 - Put all header_files in HEADER_FILES directory
@@ -26,12 +33,6 @@ gcc -Wall main.c Quadtree.c menu.c -o main
 >> cmake ..
 >> make
 >> ./ImageManipulator input_image.ppm output_image.ppm
-```
-
-## Clone the project
-
-```bash
- git clone https://github.com/omkaroak26/DSA2-project.git
 ```
 
 ## PPM Image format
