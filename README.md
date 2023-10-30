@@ -14,7 +14,7 @@ Image format :- PPM (Portable Pixmap Format)
 gcc -Wall main.c Quadtree.c menu.c -o main
 ./main input.ppm output.ppm
 ```
-##Build and Run using CMake
+## Build and Run using CMake
 - Put all header_files in HEADER_FILES
 - Put all source_files in SOURCE_FILES
 ```bash
